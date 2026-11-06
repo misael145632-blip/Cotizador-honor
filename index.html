@@ -208,12 +208,8 @@ function openD(d){
      <div class="big"><div><span>${pl(S.p).toUpperCase()}${d.pad?" · TABLET":" · 24M"}</span><b>${fmt(v)}</b></div>
      ${d.inc?`<div class="ib"><span>TU INCENTIVO</span><b>${money(d.inc)}</b></div>`:''}</div></div>
    <div class="body">
-     ${RENTA[S.p]?`<div class="sec"><h3>${pl(S.p).toUpperCase()} · TELCEL LIBRE</h3>
-       <div class="i3"><div class="tot"><span>Renta Abierto</span><b>${money(RENTA[S.p].ab)}</b></div><div><span>Controlado</span><b>${money(RENTA[S.p].ct)}</b></div><div><span>Cashback</span><b>${RENTA[S.p].cb}</b></div></div>
-       <div class="kv" style="margin-top:8px"><span>GB incluidos</span><b>${RENTA[S.p].gb}</b></div>
-       <div class="kv"><span>Total GB (promo +60%)</span><b>${RENTA[S.p].tot}</b></div>
-       <div class="kv"><span>Pago equipo + 1ª renta</span><b>${v===null?'N/A':money(Math.round((v+RENTA[S.p].ab)*100)/100)}</b></div>
-       <div class="note">WhatsApp y redes sociales ilimitados. Precios de renta según tabla Telcel Libres.</div></div>`:''}
+     ${RENTA[S.p]?`<div class="sec"><h3>${pl(S.p).toUpperCase()} + EQUIPO</h3>
+       <div class="i3"><div><span>Equipo</span><b>${fmt(v)}</b></div><div><span>Plan /mes</span><b>${money(RENTA[S.p].ab)}</b></div><div class="tot"><span>Total</span><b>${v===null?'N/A':money(Math.round((v+RENTA[S.p].ab)*100)/100)}</b></div></div></div>`:''}
      <div class="sec"><h3>PRECIO_X_PLAN ${d.pad?'[TABLET]':'[24M]'}</h3><div class="grid">
        ${plansOf(d).map((p,i)=>{const v=valsOf(d)[i];return `<button class="c${p===S.p?' on':''}${PLANS.includes(p)?'':' dis'}" data-p="${p}"><span>${pl(p)}${RENTA[p]?` · $${RENTA[p].ab.toLocaleString('es-MX')}`:''}</span><b class="${v===0?'free':''}">${v===0?'Gratis':money(v)}</b></button>`}).join('')}
      </div></div>
@@ -231,7 +227,7 @@ function openD(d){
   $('cl').onclick = close;
   $('sh').querySelectorAll('.c').forEach(b=>b.onclick=()=>{if(!PLANS.includes(b.dataset.p))return; S.p=b.dataset.p; save(); render(); openD(d);});
   $('cp').onclick = () => {
-    const r=RENTA[S.p]; const t = `📱 HONOR ${d.short}${d.acc?' + '+d.acc:''}\n${pl(S.p)}${d.pad?'':' · 24 meses'}\nPago del equipo: ${fmt(price(d))}${r?`\nRenta mensual: ${money(r.ab)} (Abierto) · ${money(r.ct)} (Controlado)\nIncluye ${r.tot} con promo · Redes ilimitadas · Cashback ${r.cb}`:''}\nVigencia: hasta ${d.a}`;
+    const r=RENTA[S.p], pv=price(d); const t = `📱 HONOR ${d.short}${d.acc?' + '+d.acc:''}\n${pl(S.p)}${d.pad?'':' · 24 meses'}\nEquipo: ${fmt(pv)}${r?`\nPlan: ${money(r.ab)}/mes${pv!==null?`\nTotal: ${money(Math.round((pv+r.ab)*100)/100)}`:''}`:''}`;
     (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(()=>toast('> cotización copiada'),()=>toast('No se pudo copiar'));
   };
 }
