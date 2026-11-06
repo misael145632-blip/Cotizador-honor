@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#000000">
+<title>Cotizador Honor · Pospago Telcel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>:root{--g:#00FF41;--g2:#00C832;--gd:#0A3D1A;--gdim:#4D8F5C;--bg:#000;--card:#030A05;--line:#0F3A1C;--ink:#C8FFD4;--warn:#FFD400;--red:#FF3B5C;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;-webkit-font-smoothing:antialiased}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;background:repeating-linear-gradient(0deg,rgba(0,255,65,.035) 0 1px,transparent 1px 3px)}
+button{font:inherit;cursor:pointer}
+.glow{text-shadow:0 0 6px rgba(0,255,65,.7),0 0 18px rgba(0,255,65,.25)}
+.top{padding:16px 14px 12px;padding-top:max(16px,env(safe-area-inset-top));border-bottom:1px solid var(--line);background:radial-gradient(120% 140% at 0% 0%,#06240F 0%,#000 60%)}
+.brand{display:flex;justify-content:space-between;align-items:center}
+.brand h1{margin:0;font-size:18px;font-weight:800;color:var(--g);letter-spacing:.02em}
+.brand h1::after{content:"_";animation:blink 1s steps(1) infinite;margin-left:2px}
+@keyframes blink{50%{opacity:0}}
+.brand span{font-size:10px;font-weight:700;color:#000;background:var(--g);padding:4px 8px;border-radius:3px;letter-spacing:.08em;box-shadow:0 0 12px rgba(0,255,65,.6)}
+.top p{margin:4px 0 12px;font-size:11px;color:var(--gdim)}
+.search{position:relative}
+.search input{width:100%;height:46px;border:1px solid var(--g2);border-radius:6px;padding:0 40px 0 34px;font:inherit;font-size:16px;color:var(--g);background:#000;outline:none;caret-color:var(--g);box-shadow:inset 0 0 12px rgba(0,255,65,.08)}
+.search input:focus{box-shadow:0 0 0 1px var(--g),0 0 16px rgba(0,255,65,.35)}
+.search input::placeholder{color:#2F6B3F}
+input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display:none}
+.search .pfx{position:absolute;left:12px;top:12px;color:var(--g);font-weight:800}
+.search .clr{position:absolute;right:6px;top:7px;width:32px;height:32px;border:1px solid var(--line);border-radius:4px;background:#000;color:var(--g);display:none}
+.sticky{position:sticky;top:0;z-index:5;background:rgba(0,0,0,.94);backdrop-filter:blur(6px);padding:10px 0 8px;border-bottom:1px solid var(--line)}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:0 14px 10px;border:1px solid var(--g2);border-radius:6px;overflow:hidden}
+.tab{height:42px;border:0;background:#000;color:var(--gdim);font-weight:800;font-size:13px;letter-spacing:.08em}
+.tab b{font-size:11px;opacity:.8;margin-left:4px}
+.tab.on{background:var(--g);color:#000;box-shadow:0 0 14px rgba(0,255,65,.5)}
+.tab+.tab{border-left:1px solid var(--g2)}
+.c.dis{opacity:.35}
+.hint{display:block;width:100%;text-align:left;margin:4px 0 8px;padding:12px 14px;border:1px dashed var(--g2);border-radius:8px;background:#020a04;color:var(--g);font-size:12px;font-weight:700}
+.hint u{text-decoration:none;border-bottom:1px solid var(--g)}
+.lbl{font-size:10px;font-weight:700;color:var(--gdim);letter-spacing:.12em;padding:0 14px 6px}
+.scroll{display:flex;gap:7px;overflow-x:auto;padding:0 14px 2px;scrollbar-width:none;scroll-snap-type:x proximity}
+.scroll::-webkit-scrollbar{display:none}
+.plan{flex:0 0 auto;min-width:56px;height:48px;border:1px solid var(--line);background:var(--card);border-radius:6px;font-weight:800;font-size:17px;color:var(--g);scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+.plan small{font-size:8px;font-weight:700;color:var(--gdim);margin-bottom:4px;letter-spacing:.1em}
+.plan.on{background:var(--g);border-color:var(--g);color:#000;box-shadow:0 0 14px rgba(0,255,65,.55)}.plan.on small{color:#003B10}
+.f{flex:0 0 auto;height:32px;padding:0 12px;border:1px solid var(--line);background:#000;border-radius:4px;font-size:12px;font-weight:700;color:var(--gdim)}
+.f.on{border-color:var(--g);color:var(--g);background:var(--gd);box-shadow:0 0 10px rgba(0,255,65,.25)}
+.bar{display:flex;justify-content:space-between;align-items:center;padding:10px 14px 0;font-size:11px;color:var(--gdim)}
+.bar select{font:inherit;font-size:12px;font-weight:700;border:0;background:#000;color:var(--g)}
+main{padding:8px 12px calc(24px + env(safe-area-inset-bottom))}
+.card{position:relative;background:linear-gradient(180deg,#041008,#020603);border:1px solid var(--line);border-radius:8px;padding:13px 14px;margin-bottom:8px;display:flex;gap:12px;align-items:center;transition:border-color .15s,box-shadow .15s}
+.card.hasinc{border-left:3px solid var(--g)}
+.card:active{border-color:var(--g);box-shadow:0 0 16px rgba(0,255,65,.25)}
+.info{flex:1;min-width:0}
+.nm{font-weight:800;font-size:14px;line-height:1.3;color:#E6FFEC}
+.acc{font-size:11px;color:var(--gdim);margin-top:3px;line-height:1.3}
+.tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.t{font-size:10px;font-weight:700;padding:3px 6px;border-radius:3px;border:1px solid var(--line);color:var(--gdim);letter-spacing:.03em}
+.t.inc{border-color:var(--g);color:var(--g);background:var(--gd)}
+.t.bono{border-color:#1E6B35;color:#7DFFA0}
+.t.exp{border-color:#5C1422;color:var(--red);background:#1A0408}
+.pr{text-align:right;flex:0 0 auto}
+.pr b{display:block;font-size:20px;font-weight:800;color:var(--g);font-variant-numeric:tabular-nums;text-shadow:0 0 8px rgba(0,255,65,.55)}
+.pr b.free{color:#000;background:var(--g);padding:2px 6px;border-radius:3px;text-shadow:none;font-size:16px}
+.pr small{font-size:9px;color:var(--gdim);font-weight:700;letter-spacing:.08em}
+.empty{text-align:center;color:var(--gdim);padding:50px 0;font-size:13px}
+#m{position:fixed;inset:0;z-index:20;pointer-events:none}
+.ov{position:absolute;inset:0;background:rgba(0,0,0,.75);opacity:0;transition:opacity .2s}
+.sh{position:absolute;left:0;right:0;bottom:0;max-height:92vh;background:#000;border-top:1px solid var(--g);border-radius:14px 14px 0 0;transform:translateY(100%);transition:transform .25s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;box-shadow:0 -10px 40px rgba(0,255,65,.15)}
+#m.open{pointer-events:auto}#m.open .ov{opacity:1}#m.open .sh{transform:none}
+.grab{width:40px;height:4px;border-radius:9px;background:var(--gdim);margin:8px auto 0}
+.hd{margin:10px 12px 0;border:1px solid var(--g2);border-radius:10px;padding:14px 16px;position:relative;background:radial-gradient(120% 140% at 100% 0%,#06280F 0%,#000 70%)}
+.hd .x{position:absolute;right:10px;top:10px;width:32px;height:32px;border-radius:4px;border:1px solid var(--line);background:#000;color:var(--g);font-size:14px}
+.hd h2{margin:0 40px 2px 0;font-size:16px;font-weight:800;line-height:1.3;color:#E6FFEC}
+.hd .acc{color:var(--gdim)}
+.big{display:flex;justify-content:space-between;align-items:flex-end;margin-top:14px}
+.big div span{display:block;font-size:10px;color:var(--gdim);font-weight:700;letter-spacing:.08em}
+.big div b{font-size:30px;font-weight:800;color:var(--g);font-variant-numeric:tabular-nums}
+.big .ib{text-align:right}.big .ib b{font-size:20px;color:var(--warn);text-shadow:0 0 8px rgba(255,212,0,.5)}
+.body{overflow-y:auto;padding:12px 12px 8px;-webkit-overflow-scrolling:touch}
+.sec{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:12px 14px;margin-bottom:10px}
+.sec h3{margin:0 0 10px;font-size:10px;font-weight:700;color:var(--gdim);letter-spacing:.12em}
+.sec h3::before{content:"> "}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.c{border:1px solid var(--line);border-radius:6px;padding:7px 9px;background:#000;text-align:left}
+.c span{display:block;font-size:10px;color:var(--gdim);font-weight:700}
+.c b{font-size:14px;font-weight:800;color:#B9FFC9;font-variant-numeric:tabular-nums}
+.c b.free{color:var(--g)}
+.c.on{border-color:var(--g);background:var(--gd);box-shadow:0 0 10px rgba(0,255,65,.3)}.c.on b{color:var(--g)}
+.i3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
+.i3 div{border:1px solid var(--line);background:#000;border-radius:6px;padding:8px 10px}.i3 span{font-size:10px;color:var(--gdim);font-weight:700;display:block}.i3 b{font-size:15px;font-weight:800;color:#B9FFC9}
+.i3 .tot{border-color:var(--warn);background:#1A1500}.i3 .tot b{color:var(--warn)}
+.kv{display:flex;justify-content:space-between;gap:10px;font-size:12px;padding:7px 0;border-top:1px dashed var(--line)}.kv:first-of-type{border-top:0}
+.kv span{color:var(--gdim)}.kv b{text-align:right;font-weight:700;color:#B9FFC9;word-break:break-word}
+.note{font-size:11px;color:var(--gdim);line-height:1.5;margin-top:8px}
+.foot{padding:10px 12px calc(12px + env(safe-area-inset-bottom));background:#000;border-top:1px solid var(--line)}
+.cta{width:100%;height:50px;border:0;border-radius:6px;background:var(--g);color:#000;font-weight:800;font-size:15px;letter-spacing:.06em;box-shadow:0 0 20px rgba(0,255,65,.45)}
+.cta:active{transform:scale(.99)}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#000;border:1px solid var(--g);color:var(--g);padding:10px 16px;border-radius:4px;font-size:13px;font-weight:700;opacity:0;transition:opacity .2s;z-index:60;pointer-events:none;box-shadow:0 0 16px rgba(0,255,65,.35)}
+@media(min-width:720px){body{max-width:560px;margin:0 auto;border-left:1px solid var(--line);border-right:1px solid var(--line);min-height:100vh}.sh{max-width:560px;margin:0 auto}}
+@media(prefers-reduced-motion:reduce){.brand h1::after{animation:none}}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="brand"><h1 class="glow">HONOR://cotizador</h1><span>24M</span></div>
+  <p>[pospago.telcel] tabla_v11.2.1 · incentivos_nov26</p>
+  <div class="search">
+    <span class="pfx">&gt;</span>
+    <input id="q" type="search" inputmode="search" placeholder="buscar: 600 elite, x6e, pad" autocomplete="off">
+    <button class="clr" id="clr" aria-label="Borrar">✕</button>
+  </div>
+</div>
+<div class="sticky">
+  <div class="tabs" id="tabs"></div>
+  <div class="lbl">// SELECCIONA PLAN</div>
+  <div class="scroll" id="plans"></div>
+  <div class="scroll" id="filt" style="margin-top:8px"></div>
+</div>
+<div class="bar"><span id="count"></span>
+  <label>sort: <select id="sort"><option value="inc">Incentivo</option><option value="pa">Menor precio</option><option value="pd">Mayor precio</option><option value="az">A–Z</option></select></label></div>
+<main id="list"></main>
+<div id="m"><div class="ov" id="ov"></div><div class="sh" id="sh"></div></div>
+<div class="toast" id="toast"></div>
+<script>
+const RAW = [{"n": "HONOR 4.5G ELN-L03 PAD X9", "k": "Equipo", "t": "4.5G", "sap": "70023633", "g1": [232.58, 170.55, 116.31, 92.42, 68.53, 52.03, 22.03, 0, 0], "g2": [249.03, 195.66, 195.66, 177.88, 177.88, 177.88], "d": "12/10/2026", "a": "PERMANENTE", "ie": 80, "ia": 0, "b": true}, {"n": "HONOR 4.5G ELN-L03 PAD X9 BUNDLE", "k": "Equipo", "t": "4.5G", "sap": "70024134", "g1": [232.58, 170.55, 116.31, 92.42, 68.53, 52.03, 22.03, 0, 0], "g2": [249.03, 195.66, 195.66, 177.88, 177.88, 177.88], "d": "12/10/2026", "a": "PERMANENTE", "ie": 80, "ia": 0, "b": true}, {"n": "HONOR 4.5G LLY-LX3 X8B HARDBUNDLE MINIONS", "k": "Equipo", "t": "4.5G", "sap": "70024214 70024215", "g1": [123.49, 72.05, 20.61, 5.61, 0, 0, 0, 0, 0], "g2": [139.94, 119.95, 99.96, 99.96, 99.96, 99.96], "d": "05/11/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 4.5G LNA-LX3 X8D 256GB", "k": "Equipo", "t": "4.5G", "sap": "71004092 71004093", "g1": [368.82, 318.29, 257.76, 242.76, 203.68, 187.18, 145.14, 86.6, 0], "g2": [385.27, 361.19, 337.11, 313.03, 313.03, 288.95], "d": "05/11/2026", "a": "17/11/2026", "ie": 100, "ia": 0, "b": false}, {"n": "HONOR 4G ALT-LX3 X7C 256GB", "k": "Equipo", "t": "LTE", "sap": "71001521 71001522", "g1": [294.41, 245.75, 187.1, 172.1, 134.9, 118.4, 77.29, 19.69, 0], "g2": [310.86, 266.45, 266.45, 244.25, 244.25, 222.04], "d": "05/11/2026", "a": "PERMANENTE", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 4G GFY-LX3 X5B 128GB", "k": "Equipo", "t": "LTE", "sap": "71001516 71001515", "g1": [115.91, 65.82, 15.19, 0.19, 0, 0, 0, 0, 0], "g2": [132.36, 113.45, 94.54, 94.54, 94.54, 94.54], "d": "12/10/2026", "a": "PERMANENTE", "ie": 5, "ia": 0, "b": false}, {"n": "HONOR 4G GFY-LX3 X5B PLUS 256GB", "k": "Equipo", "t": "LTE", "sap": "71001519 71001518", "g1": [136.33, 82.59, 29.78, 14.78, 0, 0, 0, 0, 0], "g2": [152.78, 130.95, 109.13, 109.13, 109.13, 109.13], "d": "12/10/2026", "a": "PERMANENTE", "ie": 5, "ia": 0, "b": false}, {"n": "HONOR 4G LAB-LX3 X7E 256GB", "k": "Equipo", "t": "LTE", "sap": "71005164 71005163", "g1": [409.48, 356.41, 293.34, 278.34, 236.72, 220.22, 176.91, 117.1, 0], "g2": [425.93, 399.31, 372.69, 346.07, 346.07, 319.45], "d": "05/11/2026", "a": "17/11/2026", "ie": 200, "ia": 0, "b": true}, {"n": "HONOR 4G LBU-LX3 X6E 128GB", "k": "Equipo", "t": "LTE", "sap": "71005169 71005168", "g1": [271.48, 209.04, 154.6, 130.6, 106.6, 90.1, 60.1, 13.6, 0], "g2": [287.93, 251.94, 233.95, 215.95, 215.95, 215.95], "d": "05/11/2026", "a": "17/11/2026", "ie": 150, "ia": 0, "b": true}, {"n": "HONOR 4G LBU-LX3 X6E 256GB", "k": "Equipo", "t": "LTE", "sap": "71005167 71005166", "g1": [342.82, 293.91, 235.01, 220.01, 182.55, 166.05, 124.83, 67.1, 0], "g2": [359.27, 336.81, 314.36, 291.9, 291.9, 269.45], "d": "05/11/2026", "a": "17/11/2026", "ie": 150, "ia": 0, "b": true}, {"n": "HONOR 4G LGN-LX3 X7D 256GB", "k": "Equipo", "t": "LTE", "sap": "71002967 71002968", "g1": [338.82, 290.16, 231.51, 216.51, 179.3, 162.8, 121.7, 64.1, 0], "g2": [355.27, 333.06, 310.86, 288.65, 288.65, 266.45], "d": "05/11/2026", "a": "PERMANENTE", "ie": 50, "ia": 0, "b": false}, {"n": "HONOR 4G NAA-LX3 X5D 128GB", "k": "Equipo", "t": "LTE", "sap": "71005112 71005111", "g1": [216.15, 160.63, 109.64, 87.37, 65.1, 48.6, 18.6, 0, 0], "g2": [232.6, 203.53, 188.99, 174.45, 174.45, 174.45], "d": "12/10/2026", "a": "PERMANENTE", "ie": 25, "ia": 0, "b": true}, {"n": "HONOR 4G NIC-LX3 X6C 256GB", "k": "Equipo", "t": "LTE", "sap": "71002232 71002231", "g1": [216.15, 160.63, 109.64, 87.37, 65.1, 48.6, 18.6, 0, 0], "g2": [232.6, 203.53, 188.99, 174.45, 174.45, 174.45], "d": "12/10/2026", "a": "PERMANENTE", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 4G NLA-LX3 X5C 128GB", "k": "Equipo", "t": "LTE", "sap": "71002970 71002971", "g1": [98.82, 54.36, 7.1, 0, 0, 0, 0, 0, 0], "g2": [115.27, 97.26, 86.45, 86.45, 86.45, 86.45], "d": "12/10/2026", "a": "PERMANENTE", "ie": 5, "ia": 0, "b": false}, {"n": "HONOR 4G NLA-LX3 X5C PLUS 256GB", "k": "Equipo", "t": "LTE", "sap": "71002976 71002977", "g1": [158.15, 104.42, 51.6, 36.6, 21.6, 5.1, 0, 0, 0], "g2": [174.6, 147.32, 130.95, 130.95, 130.95, 130.95], "d": "12/10/2026", "a": "PERMANENTE", "ie": 5, "ia": 0, "b": false}, {"n": "HONOR 5G ABR-NX3 400 LITE 256GB", "k": "Equipo", "t": "5G", "sap": "71002471 71002470", "g1": [346.33, 293.96, 231.6, 216.6, 175.69, 159.19, 116.23, 56.78, 0], "g2": [362.78, 310.95, 310.95, 285.04, 285.04, 259.13], "d": "12/10/2026", "a": "PERMANENTE", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G ALI-NX3 MAGIC6 LITE", "k": "Equipo", "t": "5G", "sap": "70023895 70023897 70023896", "g1": [456.58, 396.34, 326.1, 311.1, 262.31, 245.81, 198.92, 135.53, 0], "g2": [473.03, 405.45, 405.45, 371.66, 371.66, 337.88], "d": "05/11/2026", "a": "PERMANENTE", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G BVL-N49 MAGIC6 PRO", "k": "Equipo", "t": "5G", "sap": "71000170 71000169", "g1": [1506.58, 1425.73, 1334.89, 1211.1, 1196.1, 1125.21, 1040.81, 994.31, 506.67], "g2": [1523.02, 1414.24, 1414.24, 1251.06, 1251.06, 1196.66], "d": "12/10/2026", "a": "PERMANENTE", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G CLK-NX3 90 SMART", "k": "Equipo", "t": "5G", "sap": "71000184 71000185", "g1": [98.99, 51.93, 0, 0, 0, 0, 0, 0, 0], "g2": [115.44, 98.95, 74.54, 74.54, 74.54, 74.54], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G CRT-NX3 90 LITE", "k": "Equipo", "t": "5G", "sap": "70022567 70022568", "g1": [109.49, 60.55, 0, 0, 0, 0, 0, 0, 0], "g2": [125.94, 107.95, 74.54, 74.54, 74.54, 74.54], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G ELI-NX9 200 256GB", "k": "Equipo", "t": "5G", "sap": "71000407 71000406", "g1": [561.58, 493.84, 436.74, 401.1, 386.1, 348.96, 277.67, 231.17, 0], "g2": [578.03, 516.09, 516.09, 474.81, 474.81, 433.52], "d": "05/11/2026", "a": "PERMANENTE", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G ELI-NX9 200 512GB", "k": "Equipo", "t": "5G", "sap": "71000410 71000409", "g1": [666.58, 591.34, 530.49, 491.1, 476.1, 435.21, 356.42, 309.92, 0], "g2": [683.03, 609.84, 609.84, 561.06, 561.06, 512.27], "d": "05/11/2026", "a": "PERMANENTE", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G ELP-NX9 200 PRO", "k": "Equipo", "t": "5G", "sap": "71000416 71000417", "g1": [666.58, 591.34, 530.49, 491.1, 476.1, 193.71, 135.92, 89.42, 0], "g2": [683.03, 609.84, 609.84, 561.06, 319.56, 291.77], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G FNE-NX9 70 128GB", "k": "Equipo", "t": "5G", "sap": "70020102", "g1": [194.08, 137.55, 86.06, 0, 0, 0, 0, 0, 0], "g2": [210.53, 165.41, 165.41, 84.96, 84.96, 84.96], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G FNE-NX9 70 256GB", "k": "Equipo", "t": "5G", "sap": "70020034 70020035", "g1": [260.58, 194.55, 138.31, 113.42, 88.52, 72.03, 42.03, 0, 0], "g2": [277.03, 217.66, 217.66, 197.88, 197.88, 197.88], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G LNA-NX3 600E 512GB", "k": "Equipo", "t": "5G", "sap": "71004604 71004605", "g1": [511.99, 447.8, 392.47, 358.6, 343.6, 308.23, 240.48, 193.98, 0], "g2": [528.44, 471.82, 471.82, 434.08, 434.08, 396.33], "d": "12/10/2026", "a": "17/11/2026", "ie": 250, "ia": 0, "b": true}, {"n": "HONOR 5G MRK-NX3 600 ELITE 256GB", "k": "Equipo", "t": "5G", "sap": "71005600 71005601 71005599", "g1": [466.82, 410.16, 343.51, 328.51, 283.3, 266.8, 221.7, 160.1, 0], "g2": [483.27, 453.06, 422.86, 392.65, 392.65, 362.45], "d": "05/11/2026", "a": "17/11/2026", "ie": 400, "ia": 0, "b": true}, {"n": "HONOR 5G MTN-NX3 MAGIC8 LITE 512GB", "k": "Equipo", "t": "5G", "sap": "71003671 71003670 71003669", "g1": [483.48, 425.79, 358.09, 343.09, 296.85, 280.35, 234.72, 172.6, 0], "g2": [499.93, 468.69, 437.44, 406.2, 406.2, 374.95], "d": "05/11/2026", "a": "17/11/2026", "ie": 150, "ia": 0, "b": true}, {"n": "HONOR 5G NTH-NX9 50 5G 128GB", "k": "Equipo", "t": "5G", "sap": "70018199 70018200", "g1": [114.74, 64.86, 14.36, 0, 0, 0, 0, 0, 0], "g2": [131.19, 112.45, 93.71, 93.71, 93.71, 93.71], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G PGT-N19 MAGIC5 PRO", "k": "Equipo", "t": "5G", "sap": "70022106", "g1": [561.58, 493.84, 436.74, 401.1, 386.1, 348.96, 277.67, 231.17, 0], "g2": [578.03, 516.09, 516.09, 474.81, 474.81, 433.52], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G PTP-N49 MAGIC7 PRO 512GB", "k": "Equipo", "t": "5G", "sap": "71001872 71001871", "g1": [1559.08, 1476.36, 1383.64, 1256.1, 1241.1, 1168.33, 1082.06, 1035.56, 546.04], "g2": [1575.52, 1462.99, 1462.99, 1294.18, 1294.18, 1237.91], "d": "12/10/2026", "a": "PERMANENTE", "ie": 400, "ia": 0, "b": false}, {"n": "HONOR 5G RBN-NX3 X8A", "k": "Equipo", "t": "5G", "sap": "70021869 70021870", "g1": [151.49, 95.05, 40.61, 0, 0, 0, 0, 0, 0], "g2": [167.94, 143.95, 119.96, 89.54, 89.54, 89.54], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G REA-NX9 90 256GB", "k": "Equipo", "t": "5G", "sap": "70022570 70022571", "g1": [187.08, 131.55, 80.56, 0, 0, 0, 0, 0, 0], "g2": [203.53, 159.91, 159.91, 85.38, 85.38, 85.38], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G REA-NX9 90 512GB", "k": "Equipo", "t": "5G", "sap": "70022573 70022574", "g1": [346.33, 293.96, 231.6, 94.1, 63.4, 46.9, 9.04, 0, 0], "g2": [362.78, 310.95, 310.95, 172.75, 172.75, 157.04], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G RMO-NX3 MAGIC5 LITE 256GB", "k": "Equipo", "t": "5G", "sap": "70022007 70022006", "g1": [109.49, 60.55, 0, 0, 0, 0, 0, 0, 0], "g2": [125.94, 107.95, 74.54, 74.54, 74.54, 74.54], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G VKJ-NX9 600 512GB", "k": "Equipo", "t": "5G", "sap": "71004482 71004483", "g1": [709.16, 656.79, 594.43, 527.6, 512.6, 470.19, 414.27, 367.77, 0], "g2": [725.61, 673.78, 673.78, 596.04, 596.04, 570.12], "d": "05/11/2026", "a": "17/11/2026", "ie": 350, "ia": 0, "b": true}, {"n": "HONOR LTE ANY-LX3 X9", "k": "Equipo", "t": "LTE", "sap": "70019776 70019777 70019778", "g1": [150.91, 94.57, 40.19, 0, 0, 0, 0, 0, 0], "g2": [167.36, 143.45, 119.54, 87.04, 87.04, 87.04], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR LTE CLK-LX3 X7B", "k": "Equipo", "t": "LTE", "sap": "70023627 70023626", "g1": [197.58, 140.55, 88.81, 0, 0, 0, 0, 0, 0], "g2": [214.03, 168.16, 168.16, 85.38, 85.38, 85.38], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR LTE CMA-LX3 X7", "k": "Equipo", "t": "LTE", "sap": "70019454 70019455", "g1": [77.99, 34.68, 0, 0, 0, 0, 0, 0, 0], "g2": [94.44, 80.95, 67.46, 67.46, 67.46, 67.46], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR LTE CRT-LX3 X8A", "k": "Equipo", "t": "LTE", "sap": "70021634 70021635", "g1": [136.33, 82.59, 0, 0, 0, 0, 0, 0, 0], "g2": [152.78, 130.95, 74.54, 74.54, 74.54, 74.54], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR LTE ELN2-L23 PAD X9A", "k": "Equipo", "t": "LTE", "sap": "71002227", "g1": [282.16, 234.38, 176.6, 161.6, 125.27, 108.77, 68.11, 10.94, 0], "g2": [298.61, 255.95, 255.95, 234.62, 234.62, 213.29], "d": "05/11/2026", "a": "PERMANENTE", "ie": 80, "ia": 0, "b": true}, {"n": "HONOR LTE JDY-LX3 X6B 256GB", "k": "Equipo", "t": "LTE", "sap": "71000447 71000448", "g1": [136.33, 82.59, 29.78, 0, 0, 0, 0, 0, 0], "g2": [152.78, 130.95, 109.13, 89.13, 89.13, 89.13], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR LTE JMS-L03 PAD X7 128GB", "k": "Equipo", "t": "LTE", "sap": "71003816", "g1": [145.08, 89.78, 36.03, 21.03, 6.02, 0, 0, 0, 0], "g2": [161.53, 138.45, 115.38, 115.38, 115.38, 115.38], "d": "12/10/2026", "a": "PERMANENTE", "ie": 40, "ia": 0, "b": false}, {"n": "HONOR LTE LLY-LX3 X8B", "k": "Equipo", "t": "LTE", "sap": "70023637 70023638", "g1": [123.49, 72.05, 20.61, 5.61, 0, 0, 0, 0, 0], "g2": [139.94, 119.95, 99.96, 99.96, 99.96, 99.96], "d": "05/11/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR LTE NDL-L03 PAD X8A", "k": "Equipo", "t": "LTE", "sap": "71001646", "g1": [208.66, 150.05, 97.52, 74.48, 51.44, 34.94, 4.94, 0, 0], "g2": [225.11, 176.87, 176.87, 160.79, 160.79, 160.79], "d": "12/10/2026", "a": "PERMANENTE", "ie": 80, "ia": 0, "b": true}, {"n": "HONOR LTE NDL2-L03 PAD X8B 128GB", "k": "Equipo", "t": "LTE", "sap": "71004260", "g1": [229.08, 167.55, 113.56, 89.79, 66.03, 49.53, 19.53, 0, 0], "g2": [245.53, 192.91, 192.91, 175.38, 175.38, 175.38], "d": "12/10/2026", "a": "17/11/2026", "ie": 80, "ia": 0, "b": true}, {"n": "HONOR LTE NTN-LX3 50 LITE", "k": "Equipo", "t": "LTE", "sap": "70018204 70018205", "g1": [45.32, 7.84, 0, 0, 0, 0, 0, 0, 0], "g2": [61.78, 52.95, 44.13, 44.13, 44.13, 44.13], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR LTE RKY-LX3 X7A", "k": "Equipo", "t": "LTE", "sap": "70021518 70021517 70021519", "g1": [130.49, 77.8, 0, 0, 0, 0, 0, 0, 0], "g2": [146.94, 125.95, 73.71, 73.71, 73.71, 73.71], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR LTE TFY-LX3 X8", "k": "Equipo", "t": "LTE", "sap": "70019457 70019458 70019459", "g1": [49.41, 0, 0, 0, 0, 0, 0, 0, 0], "g2": [65.86, 41.45, 34.54, 34.54, 34.54, 34.54], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR LTE VNE-LX3 X6 64GB", "k": "Equipo", "t": "LTE", "sap": "70020557 70020556", "g1": [0, 0, 0, 0, 0, 0, 0, 0, 0], "g2": [15.69, 13.45, 11.21, 11.21, 11.21, 11.21], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR LTE VNE-LX3 X6S 128GB", "k": "Equipo", "t": "LTE", "sap": "70020559 70020558", "g1": [45.32, 7.84, 0, 0, 0, 0, 0, 0, 0], "g2": [61.78, 52.95, 44.13, 44.13, 44.13, 44.13], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR LTE WDY-LX3 X6A", "k": "Equipo", "t": "LTE", "sap": "70023509 70023510 70023508", "g1": [48.82, 0, 0, 0, 0, 0, 0, 0, 0], "g2": [65.28, 41.45, 34.54, 34.54, 34.54, 34.54], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR LTE WDY-LX3 X6A PLUS 128GB", "k": "Equipo", "t": "LTE", "sap": "70023505 70023506", "g1": [69.24, 0, 0, 0, 0, 0, 0, 0, 0], "g2": [85.69, 41.45, 34.54, 34.54, 34.54, 34.54], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR LTE WDY-LX3 X6A PLUS 256GB", "k": "Equipo", "t": "LTE", "sap": "70023859 70023860", "g1": [84.41, 39.95, 0, 0, 0, 0, 0, 0, 0], "g2": [100.86, 86.45, 72.04, 72.04, 72.04, 72.04], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR LTE WOD-LX3 X5 PLUS 128GB", "k": "Equipo", "t": "LTE", "sap": "70023856 70023857", "g1": [115.91, 65.82, 15.19, 0.19, 0, 0, 0, 0, 0], "g2": [132.36, 113.45, 94.54, 94.54, 94.54, 94.54], "d": "12/10/2026", "a": "PERMANENTE", "ie": 5, "ia": 0, "b": false}, {"n": "HONOR LTE WOD-LX3 X5 PLUS 64GB", "k": "Equipo", "t": "LTE", "sap": "70023512 70023513", "g1": [16.16, 0, 0, 0, 0, 0, 0, 0, 0], "g2": [32.61, 27.95, 23.29, 23.29, 23.29, 23.29], "d": "12/10/2026", "a": "20/01/2027", "ie": 5, "ia": 0, "b": false}, {"n": "HONOR 4.5G LLY-LX3 X8B + BOCINA BLUETOOTH", "k": "Combo", "t": "5G", "sap": "70024255 70024254", "g1": [123.49, 72.05, 20.61, 5.61, 0, 0, 0, 0, 0], "g2": [139.94, 119.95, 99.96, 99.96, 99.96, 99.96], "d": "05/11/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G BKQ-N49 MAGIC8 PRO 512GB + PAD X8B WIFI HB", "k": "Combo", "t": "5G", "sap": "71004179", "g1": [1904.15, 1817.68, 1721.21, 1586.18, 1571.18, 1494.66, 1404.64, 1358.14, 864.87], "g2": [1920.6, 1860.58, 1800.56, 1680.52, 1620.51, 1560.49], "d": "12/10/2026", "a": "PERMANENTE", "ie": 500, "ia": 0, "b": true}, {"n": "HONOR 5G BRP-NX3 MAGIC7 LITE 512GB Y HEADPHONES HB", "k": "Combo", "t": "5G", "sap": "71001763 71001764", "g1": [509.08, 445.09, 371.1, 356.1, 303.56, 287.06, 238.29, 173.03, 0], "g2": [525.53, 450.45, 450.45, 412.91, 412.91, 375.38], "d": "05/11/2026", "a": "PERMANENTE", "ie": 50, "ia": 0, "b": false}, {"n": "HONOR 5G BVL-N49 MAGIC6 PRO BUNDLE + PAD X9", "k": "Combo", "t": "5G", "sap": "71000153 71000152", "g1": [1506.58, 1425.73, 1334.89, 1211.1, 1196.1, 1125.21, 1040.81, 994.31, 506.67], "g2": [1523.02, 1414.24, 1414.24, 1251.06, 1251.06, 1196.66], "d": "12/10/2026", "a": "PERMANENTE", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G CLK-NX3 90 SMART + BOCINA BLUETOOTH", "k": "Combo", "t": "5G", "sap": "71000208 71000209", "g1": [98.99, 51.93, 0, 0, 0, 0, 0, 0, 0], "g2": [115.44, 98.95, 74.54, 74.54, 74.54, 74.54], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G DNP-NX9 400 PRO 512GB Y HEADPHONES HB", "k": "Combo", "t": "5G", "sap": "71002237", "g1": [855.57, 797.98, 730.39, 653.1, 638.1, 590.46, 529.31, 482.81, 18.42], "g2": [872.03, 809.74, 809.74, 716.31, 716.31, 685.16], "d": "05/11/2026", "a": "20/01/2027", "ie": 200, "ia": 0, "b": false}, {"n": "HONOR 5G DNY-NX9 400 512GB Y HEADPHONES HB", "k": "Combo", "t": "5G", "sap": "71002235 71002234", "g1": [666.58, 591.34, 530.49, 491.1, 476.1, 435.21, 356.42, 309.92, 0], "g2": [683.03, 609.84, 609.84, 561.06, 561.06, 512.27], "d": "05/11/2026", "a": "PERMANENTE", "ie": 100, "ia": 0, "b": false}, {"n": "HONOR 5G ELI-NX9 200 512GB + AUDÍFONOS OWS HB", "k": "Combo", "t": "5G", "sap": "71000415 71000414", "g1": [666.58, 591.34, 530.49, 491.1, 476.1, 435.21, 356.42, 309.92, 0], "g2": [683.03, 609.84, 609.84, 561.06, 561.06, 512.27], "d": "05/11/2026", "a": "PERMANENTE", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G ELI-NX9 200 256GB + AUDÍFONOS OWS HB", "k": "Combo", "t": "5G", "sap": "71000413 71000412", "g1": [561.58, 493.84, 436.74, 401.1, 386.1, 348.96, 277.67, 231.17, 0], "g2": [578.03, 516.09, 516.09, 474.81, 474.81, 433.52], "d": "05/11/2026", "a": "PERMANENTE", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G ELP-NX9 200 PRO + PAD X9 WI-FI Y CARGADOR INALÁMBRICO HB", "k": "Combo", "t": "5G", "sap": "71000422 71000421", "g1": [666.58, 591.34, 530.49, 491.1, 476.1, 193.71, 135.92, 89.42, 0], "g2": [683.03, 609.84, 609.84, 561.06, 319.56, 291.77], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G ELP-NX9 200 PRO + PAD X9 WI-FI HB", "k": "Combo", "t": "5G", "sap": "71000420 71000419", "g1": [666.58, 591.34, 530.49, 491.1, 476.1, 193.71, 135.92, 89.42, 0], "g2": [683.03, 609.84, 609.84, 561.06, 319.56, 291.77], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G FNE-NX9 70 128GB + SMARTBAND", "k": "Combo", "t": "5G", "sap": "70020104 70020103", "g1": [194.08, 137.55, 86.06, 0, 0, 0, 0, 0, 0], "g2": [210.53, 165.41, 165.41, 84.96, 84.96, 84.96], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G LNA-NX3 600E 512GB + HONOR 4G NDL2-L03 PAD X8B 128GB", "k": "Combo", "t": "5G", "sap": "71004753 71004754", "g1": [721.99, 669.17, 606.35, 538.6, 523.6, 480.73, 424.35, 377.85, 149.67], "g2": [738.44, 685.7, 685.7, 606.58, 606.58, 580.2], "d": "05/11/2026", "a": "17/11/2026", "ie": 250, "ia": 80, "b": true}, {"n": "HONOR 5G MRK-NX3 600 ELITE 256GB + HONOR MKV-ME00 EARBUDS CLIP 2 PRO", "k": "Combo", "t": "5G", "sap": "71005695 71005694 71005693", "g1": [500.15, 441.41, 388.82, 357.68, 342.68, 310.03, 247.74, 201.24, 20.85], "g2": [516.6, 484.31, 468.17, 452.03, 435.88, 403.59], "d": "05/11/2026", "a": "17/11/2026", "ie": 400, "ia": 60, "b": true}, {"n": "HONOR 5G MRK-NX3 600 ELITE 256GB + HONOR ROM-B09 WATCH 6", "k": "Combo", "t": "5G", "sap": "71005692 71005691 71005690", "g1": [700.15, 628.91, 570.07, 532.68, 517.68, 478.78, 403.99, 357.49, 20.85], "g2": [716.6, 671.81, 649.42, 627.03, 604.63, 559.84], "d": "05/11/2026", "a": "17/11/2026", "ie": 400, "ia": 150, "b": true}, {"n": "HONOR 5G MTN-NX3 MAGIC8 LITE 512GB + HONOR ROM-B09 WATCH 6", "k": "Combo", "t": "5G", "sap": "71004682 71004681 71004683", "g1": [750.15, 675.79, 615.38, 576.43, 561.43, 520.97, 443.06, 396.56, 166.35], "g2": [766.6, 718.69, 694.73, 670.78, 646.82, 598.91], "d": "05/11/2026", "a": "17/11/2026", "ie": 150, "ia": 150, "b": true}, {"n": "HONOR 5G NTH-NX9 50 256GB + AUDIFONOS", "k": "Combo", "t": "5G", "sap": "70018201 70018202", "g1": [260.58, 224.23, 177.89, 143.1, 128.1, 101.71, 61.81, 15.31, 0], "g2": [277.03, 257.24, 257.24, 227.56, 227.56, 217.66], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G NTH-NX9 50 256GB + AUDIFONOS", "k": "Combo", "t": "5G", "sap": "70018951 70018950", "g1": [260.58, 194.55, 138.31, 113.42, 88.52, 72.03, 42.03, 0, 0], "g2": [277.03, 217.66, 217.66, 197.88, 197.88, 197.88], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G RBN-NX3 X8A + PAD X8", "k": "Combo", "t": "5G", "sap": "70022016 70022017", "g1": [425.08, 367.09, 299.1, 284.1, 237.56, 221.06, 175.29, 113.02, 0], "g2": [441.53, 378.45, 378.45, 346.91, 346.91, 315.38], "d": "12/10/2026", "a": "PERMANENTE", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G RMO-NX3 MAGIC5 LITE + BAND 6", "k": "Combo", "t": "5G", "sap": "70021654 70021655", "g1": [124.08, 72.53, 0, 0, 0, 0, 0, 0, 0], "g2": [140.53, 120.45, 74.13, 74.13, 74.13, 74.13], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G RMO-NX3 MAGIC5 LITE 256GB + BAND7", "k": "Combo", "t": "5G", "sap": "70022008 70022009", "g1": [109.49, 60.55, 0, 0, 0, 0, 0, 0, 0], "g2": [125.94, 107.95, 74.54, 74.54, 74.54, 74.54], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 5G VKJ-NX9 600 512GB + HONOR ROM-B09 WATCH 6", "k": "Combo", "t": "5G", "sap": "71004680 71004679", "g1": [913.32, 853.67, 784.01, 702.6, 687.6, 637.89, 574.69, 528.19, 61.73], "g2": [929.78, 863.36, 863.36, 763.74, 763.74, 730.54], "d": "05/11/2026", "a": "17/11/2026", "ie": 350, "ia": 150, "b": true}, {"n": "HONOR 4G ABR-LX3 X8C 512GB + EARBUDS X7I HB", "k": "Combo", "t": "LTE", "sap": "71001823 71001822", "g1": [166.66, 114.05, 64.52, 42.98, 21.44, 4.94, 0, 0, 0], "g2": [183.11, 143.87, 143.87, 130.79, 130.79, 130.79], "d": "05/11/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR LTE CLK-LX3 X7B + BOCINA BLUETOOTH", "k": "Combo", "t": "LTE", "sap": "70024252 70024253", "g1": [197.58, 140.55, 88.81, 0, 0, 0, 0, 0, 0], "g2": [214.03, 168.16, 168.16, 85.38, 85.38, 85.38], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR LTE CRT-LX3 X8A + EARBUDS X3 LITE", "k": "Combo", "t": "LTE", "sap": "70021637 70021636", "g1": [304.33, 254.96, 195.6, 180.6, 142.69, 126.19, 84.73, 26.78, 0], "g2": [320.78, 274.95, 274.95, 252.04, 252.04, 229.13], "d": "12/10/2026", "a": "PERMANENTE", "ie": null, "ia": 0, "b": false}, {"n": "HONOR 4G LAB-LX3 X7E 256GB + HONOR WTS-B19 WATCH X5I", "k": "Combo", "t": "LTE", "sap": "71005696 71005697", "g1": [469.48, 412.66, 345.84, 330.84, 285.47, 268.97, 223.79, 162.1, 41.35], "g2": [485.93, 455.56, 425.19, 394.82, 394.82, 364.45], "d": "05/11/2026", "a": "17/11/2026", "ie": 200, "ia": 50, "b": true}, {"n": "HONOR 4G LBU-LX3 X6E 128GB + HONOR SCT-T10 EARBUDS X10 LITE", "k": "Combo", "t": "LTE", "sap": "71005700 71005701", "g1": [271.48, 209.04, 154.6, 130.6, 106.6, 90.1, 60.1, 13.6, 20.85], "g2": [287.93, 251.94, 233.95, 215.95, 215.95, 215.95], "d": "05/11/2026", "a": "17/11/2026", "ie": 150, "ia": 5, "b": true}, {"n": "HONOR 4G LBU-LX3 X6E 256GB + HONOR PAK-T10 EARBUDS A PRO", "k": "Combo", "t": "LTE", "sap": "71005698 71005699", "g1": [396.15, 343.91, 281.68, 266.68, 225.89, 209.39, 166.49, 107.1, 24.85], "g2": [412.6, 386.81, 361.03, 335.24, 335.24, 309.45], "d": "05/11/2026", "a": "17/11/2026", "ie": 150, "ia": 15, "b": true}, {"n": "HONOR LTE WDY-LX3 X6A COMBO MOCHILA", "k": "Combo", "t": "LTE", "sap": "70024156 70024157", "g1": [48.82, 0, 0, 0, 0, 0, 0, 0, 0], "g2": [65.28, 41.45, 34.54, 34.54, 34.54, 34.54], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR LTE WDY-LX3 X6A PLUS 128GB COMBO MOCHILA", "k": "Combo", "t": "LTE", "sap": "70024161 70024160", "g1": [69.24, 0, 0, 0, 0, 0, 0, 0, 0], "g2": [85.69, 41.45, 34.54, 34.54, 34.54, 34.54], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}, {"n": "HONOR LTE WDY-LX3 X6A PLUS 256GB COMBO MOCHILA", "k": "Combo", "t": "LTE", "sap": "70024164 70024165", "g1": [84.41, 39.95, 0, 0, 0, 0, 0, 0, 0], "g2": [100.86, 86.45, 72.04, 72.04, 72.04, 72.04], "d": "12/10/2026", "a": "20/01/2027", "ie": null, "ia": 0, "b": false}];
+const PLANS = ['2','3','4','5','6','7','9','12','V'];
+const PAD_PLANS = ['3','4','5','7','9','UI'];
+const pl = p => p==='V' ? 'Plan V' : 'Plan '+p;
+const DATA = RAW.map((d,i)=>{
+  const [main, ...rest] = d.n.split(/ \+ | Y (?=HEADPHONES|AUD|CARG)/);
+  const short = main.replace(/^HONOR\s+/,'').replace(/\b(4\.5G|5G|4G|LTE)\b/g,'').replace(/\b[A-Z0-9]{2,5}-[A-Z0-9]{2,5}\b/g,'').replace(/\s+/g,' ').trim();
+  const acc = rest.join(' + ').replace(/HONOR\s+/g,'').replace(/\b(4\.5G|5G|4G|LTE)\b/g,'').replace(/\b[A-Z0-9]{2,5}-[A-Z0-9]{2,5}\b/g,'').replace(/\s+/g,' ').trim();
+  const cat = (d.k==='Combo' || /BUNDLE/i.test(d.n)) ? 'Combo' : 'Equipo';
+  const pad = /^PAD\b/.test(short);
+  return {...d, i, short, acc, cat, pad, inc:(d.ie||0)+(d.ia||0)};
+});
+const S = {p:'5', f:'all', q:'', sort:'inc', tab:'Equipo'};
+try{ const sv=JSON.parse(localStorage.getItem('cotHonor24')||'{}'); if(sv.p) S.p=sv.p; if(sv.sort) S.sort=sv.sort; }catch(e){}
+const $ = id => document.getElementById(id);
+const money = v => '$'+Number(v).toLocaleString('es-MX',{minimumFractionDigits:v%1?2:0,maximumFractionDigits:2});
+const plansOf = d => d.pad ? PAD_PLANS : PLANS;
+const valsOf = d => d.pad ? d.g2 : d.g1;
+const price = (d,p=S.p) => { const i=plansOf(d).indexOf(p); return i<0 ? null : valsOf(d)[i]; };
+const fmt = v => v===null ? 'N/A' : v===0 ? 'GRATIS' : money(v);
+const today = new Date(); today.setHours(0,0,0,0);
+const left = d => { if(!d.a || !/\d/.test(d.a)) return null; const [dd,mm,yy]=d.a.split('/'); return Math.round((new Date(+yy,mm-1,+dd)-today)/864e5); };
+const save = () => { try{ localStorage.setItem('cotHonor24', JSON.stringify({p:S.p,sort:S.sort})); }catch(e){} };
+const FILTERS = [['all','TODOS'],['inc','$ INCENTIVO'],['bono','BONO'],['exp','! VENCE']];
+
+function renderBars(){
+  const n = k => DATA.filter(d=>d.cat===k).length;
+  $('tabs').innerHTML = [['Equipo','EQUIPOS'],['Combo','COMBOS']].map(([k,l])=>`<button class="tab${S.tab===k?' on':''}" data-k="${k}">${l}<b>${n(k)}</b></button>`).join('');
+  $('plans').innerHTML = PLANS.map(p=>`<button class="plan${p===S.p?' on':''}" data-p="${p}"><small>PLAN</small>${p}</button>`).join('');
+  $('filt').innerHTML = FILTERS.map(([v,l])=>`<button class="f${v===S.f?' on':''}" data-f="${v}">${l}</button>`).join('');
+  $('sort').value = S.sort;
+}
+function render(){
+  renderBars();
+  const q = S.q.trim().toUpperCase().split(/\s+/).filter(Boolean);
+  const mq = d => !q.length || q.every(t=>/^\d{5,}$/.test(t) ? d.sap.includes(t) : (d.short+' '+d.acc+(t.includes('-')?' '+d.n:'')).toUpperCase().includes(t));
+  const mf = d => {
+    if(S.f==='inc' && !d.inc) return false;
+    if(S.f==='bono' && !d.b) return false;
+    if(S.f==='exp'){ const x=left(d); if(x===null || x>15) return false; }
+    return true;
+  };
+  let L = DATA.filter(d=>d.cat===S.tab && mq(d) && mf(d));
+  const hidF = DATA.filter(d=>d.cat===S.tab && mq(d) && !mf(d)).length;
+  const other = S.tab==='Combo'?'Equipo':'Combo';
+  const hidT = q.length ? DATA.filter(d=>d.cat===other && mq(d) && mf(d)).length : 0;
+  const FL = {inc:'$ INCENTIVO',bono:'BONO',exp:'! VENCE'};
+  let hint = '';
+  if(S.f!=='all' && hidF) hint += `<button class="hint" data-act="all">> ${hidF} ${hidF===1?'oculto':'ocultos'} por filtro ${FL[S.f]} · <u>VER TODOS</u></button>`;
+  if(hidT) hint += `<button class="hint" data-act="tab">> ${hidT} en ${other==='Combo'?'COMBOS':'EQUIPOS'} · <u>VER</u></button>`;
+  const pv = d => { const v=price(d); return v===null ? 1e9 : v; };
+  const cmp = {inc:(a,b)=>b.inc-a.inc||pv(a)-pv(b), pa:(a,b)=>pv(a)-pv(b), pd:(a,b)=>(price(b)??-1)-(price(a)??-1), az:(a,b)=>a.short.localeCompare(b.short)};
+  L.sort(cmp[S.sort]);
+  $('count').textContent = `> ${L.length} ${S.tab==='Combo'?'combos':'equipos'} · ${pl(S.p).toLowerCase()}`;
+  $('list').innerHTML = L.length ? L.map(d=>{
+    const v=price(d), x=left(d);
+    return `<div class="card${d.inc?' hasinc':''}" data-i="${d.i}">
+      <div class="info"><div class="nm">${d.short}</div>${d.acc?`<div class="acc">+ ${d.acc}</div>`:''}
+        <div class="tags">${d.inc?`<span class="t inc">+${money(d.inc)}</span>`:''}${d.b?'<span class="t bono">BONO</span>':''}
+        <span class="t">${d.t}</span>${x!==null&&x<=15?`<span class="t exp">EXP ${d.a.slice(0,5)}</span>`:''}</div></div>
+      <div class="pr"><b class="${v===0?'free':''}">${fmt(v)}</b><small>${v===null?'NO APLICA':pl(S.p).toUpperCase()}</small></div></div>`;
+  }).join('') + hint : (hint ? '<div class="empty" style="padding:24px 0 12px">> 0 resultados con este filtro</div>'+hint : '<div class="empty">> 0 resultados. prueba otra búsqueda</div>');
+}
+function openD(d){
+  const v=price(d), x=left(d);
+  $('sh').innerHTML = `<div class="grab"></div>
+   <div class="hd"><button class="x" id="cl" aria-label="Cerrar">✕</button>
+     <h2>${d.short}</h2>${d.acc?`<div class="acc">+ ${d.acc}</div>`:''}
+     <div class="big"><div><span>${pl(S.p).toUpperCase()}${d.pad?" · TABLET":" · 24M"}</span><b>${fmt(v)}</b></div>
+     ${d.inc?`<div class="ib"><span>TU INCENTIVO</span><b>${money(d.inc)}</b></div>`:''}</div></div>
+   <div class="body">
+     <div class="sec"><h3>PRECIO_X_PLAN ${d.pad?'[TABLET]':'[24M]'}</h3><div class="grid">
+       ${plansOf(d).map((p,i)=>{const v=valsOf(d)[i];return `<button class="c${p===S.p?' on':''}${PLANS.includes(p)?'':' dis'}" data-p="${p}"><span>${pl(p)}</span><b class="${v===0?'free':''}">${v===0?'Gratis':money(v)}</b></button>`}).join('')}
+     </div></div>
+     <div class="sec"><h3>INCENTIVO_VENDEDOR</h3><div class="i3">
+       <div><span>Equipo</span><b>${money(d.ie||0)}</b></div><div><span>Accesorio</span><b>${money(d.ia||0)}</b></div><div class="tot"><span>Total</span><b>${money(d.inc)}</b></div></div>
+       <div class="note">${d.b?'[OK] Cuenta para Bono+KPI. ':'[--] Sin bono. '}Si no llegas al 60% del target se paga solo el 60%.${/600 ELITE/i.test(d.n)?'<br>[★] 600 Elite: +$400/$300/$200 según target (100/80/&lt;80%) y +$2,000 si vende ≥ Samsung A57 en tienda.':''}</div></div>
+     <div class="sec"><h3>DATA</h3>
+       <div class="kv"><span>Tipo</span><b>${d.k} · ${d.t}</b></div>
+       <div class="kv"><span>Clave SAP</span><b>${d.sap}</b></div>
+       <div class="kv"><span>Vigencia</span><b>hasta ${d.a}${x!==null?` · ${x} días`:''}</b></div>
+       <div class="kv"><span>Nombre completo</span><b style="font-size:12px">${d.n}</b></div></div>
+   </div>
+   <div class="foot"><button class="cta" id="cp">[ COPIAR COTIZACIÓN ]</button></div>`;
+  $('m').classList.add('open'); document.body.style.overflow='hidden';
+  $('cl').onclick = close;
+  $('sh').querySelectorAll('.c').forEach(b=>b.onclick=()=>{if(!PLANS.includes(b.dataset.p))return; S.p=b.dataset.p; save(); render(); openD(d);});
+  $('cp').onclick = () => {
+    const t = `📱 HONOR ${d.short}${d.acc?' + '+d.acc:''}\n${pl(S.p)}${d.pad?'':' · 24 meses'}: ${fmt(price(d))}\nVigencia: hasta ${d.a}`;
+    (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(()=>toast('> cotización copiada'),()=>toast('No se pudo copiar'));
+  };
+}
+function close(){ $('m').classList.remove('open'); document.body.style.overflow=''; }
+function toast(t){ const e=$('toast'); e.textContent=t; e.style.opacity=1; setTimeout(()=>e.style.opacity=0,1600); }
+$('tabs').onclick = e => { const b=e.target.closest('.tab'); if(b){ S.tab=b.dataset.k; S.f='all'; save(); render(); window.scrollTo(0,0);} };
+$('plans').onclick = e => { const b=e.target.closest('.plan'); if(b){ S.p=b.dataset.p; save(); render(); } };
+$('filt').onclick = e => { const b=e.target.closest('.f'); if(b){ S.f=b.dataset.f; save(); render(); } };
+$('list').onclick = e => { const h=e.target.closest('.hint'); if(h){ if(h.dataset.act==='all') S.f='all'; else { S.tab=(S.tab==='Combo'?'Equipo':'Combo'); S.f='all'; } save(); render(); return; } const c=e.target.closest('.card'); if(c) openD(DATA[+c.dataset.i]); };
+$('ov').onclick = close;
+document.addEventListener('keydown', e => { if(e.key==='Escape') close(); });
+$('q').oninput = e => { S.q=e.target.value; $('clr').style.display=S.q?'block':'none'; render(); };
+$('clr').onclick = () => { $('q').value=''; S.q=''; $('clr').style.display='none'; render(); $('q').focus(); };
+$('sort').onchange = e => { S.sort=e.target.value; save(); render(); };
+render();
+setTimeout(()=>{ const on=document.querySelector('.plan.on'); if(on) on.scrollIntoView({inline:'center',block:'nearest'}); },0);
+</script>
+</body>
+</html>
